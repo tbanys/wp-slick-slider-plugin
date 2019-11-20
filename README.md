@@ -1,0 +1,1 @@
+"# Slick Slider Wordpress Plugin" 

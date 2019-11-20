@@ -1,0 +1,17 @@
+{
+    "name": "lenovo/tb-slick-slider",
+    "description": "Starter Plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Tautvydas",
+            "email": "banys.tautvydas@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"}
+    }
+}
