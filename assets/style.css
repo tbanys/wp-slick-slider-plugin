@@ -20,14 +20,8 @@
 	opacity: 1;
 }
 
-.tb_slick_slider .tb_slick_slider_slide {
-  height: 45vw;
-  max-height: 80vh;
-  min-height: 500px;
-	background-size: cover;
-	background-repeat: no-repeat;
-	width: 100%;
-	background-position: center;
+.tb_slick_slider .slick-slide {
+  border-radius: 0!important;
 }
 
 .tb_slick_slider_thumbnails.slick-initialized {
@@ -36,7 +30,6 @@
   left: 5%;
   bottom: 0;
   margin: auto;
-  height: 80%;
 }
 
 .tb_slick_slider_thumbnails .slick-track,
@@ -50,28 +43,28 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transform: none!important;
 }
 
-.tb_slick_slider_thumbnails .thumbnail_wrapper {
-  width: 245px!important;
-  height: 131px!important;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+.tb_slick_slider_thumbnails .slick-slide {
+  width: 100%!important;
+  height: auto!important;
+  max-width: 250px!important;
+  max-height: 96px!important;
   border-radius: 10px;
   margin-bottom: 20px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
 }
 
-.tb_slick_slider_thumbnails .slick-track .thumbnail_wrapper:last-child {
+.tb_slick_slider_thumbnails .slick-track .slick-slide:last-child {
   margin-bottom: 0;
 }
 
-.tb_slick_slider_thumbnails .thumbnail_wrapper.slick-current.slick-active {
-  border: 1px solid #707070;
+.tb_slick_slider_thumbnails .slick-slide.slick-current.slick-active {
+  border: 2px solid #C31B23;
 }
 
-.tb_slick_slider_thumbnails .thumbnail_wrapper:focus {
+.tb_slick_slider_thumbnails .slick-slide:focus {
   outline: 0;
 }
 
@@ -80,6 +73,7 @@
   right: 0;
   bottom: -35px;
   z-index: 19;
+  max-width: 42%;
 }
 
 .badge_image {
@@ -96,18 +90,12 @@
 }
 
 @media (max-width: 767px) {
-  .tb_slick_slider .tb_slick_slider_slide {
-    height: 87vw;
-    max-height: 80vh;
-    min-height: auto;
-  }
-
   .badge_image {
     position: absolute;
     right: 0;
-    bottom: -12px;
+    bottom: -8px;
     z-index: 21;
-    max-width: 122px;
+    max-width: 84px;
   }
 
   .tb_slick_slider_wrapper .top_image {
@@ -115,6 +103,5 @@
     right: -23px;
     bottom: -35px;
     z-index: 19;
-    max-width: 78%;
   }
 }

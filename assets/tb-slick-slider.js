@@ -2,17 +2,20 @@
 
   // Initialize each block on page load (front end).
   $(document).ready(function(){
-    if ($('.tb_slick_slider').length > 0) {
-      initializeBlock();
-    }
+      $('.tb_slick_slider_wrapper').each(function(){
+        initializeSlickSlider($(this));
+      });
   });
 
-  var initializeBlock = function() {
-    $('.tb_slick_slider').slick({
+  var initializeSlickSlider = function(slider) {
+    var main_slider = slider.find('.tb_slick_slider').selector + '_' + slider.find('.tb_slick_slider').data('id');
+    var thumnbs = slider.find('.tb_slick_slider_thumbnails').selector + '_' + slider.find('.tb_slick_slider_thumbnails').data('id') ;
+    var thumnbs_slide = thumnbs + ' .slick-slide';
+    $(main_slider).slick({
       fade: true,
       infinite: true,
       cssEase: 'ease-out',
-      autoplaySpeed: 8000,
+      autoplaySpeed: $(main_slider).data('interval'),
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
@@ -20,30 +23,30 @@
       arrows: false,
     }); 
     
-    $('.tb_slick_slider_thumbnails').slick({
-      slidesToShow: $('.tb_slick_slider_thumbnails').data('items'),
+    $(thumnbs).slick({
+      slidesToShow: $(thumnbs).data('items'),
       slidesToScroll: 1,
-      asNavFor: '.tb_slick_slider',
+      asNavFor: main_slider,
       dots: false,
       arrows: false,
       focusOnSelect: true
     });
 
     // Remove active class from all thumbnail slides
-    $('.tb_slick_slider_thumbnails .slick-slide').removeClass('slick-active');
-    $('.tb_slick_slider_thumbnails .slick-slide').removeClass('slick-current');
+    $(thumnbs_slide).removeClass('slick-active');
+    $(thumnbs_slide).removeClass('slick-current');
 
     //Set active class to first thumbnail slides
-    $('.tb_slick_slider_thumbnails .slick-slide').eq(0).addClass('slick-active');
-    $('.tb_slick_slider_thumbnails .slick-slide').eq(0).addClass('slick-current');
+    $(thumnbs_slide).eq(0).addClass('slick-active');
+    $(thumnbs_slide).eq(0).addClass('slick-current');
 
     // On before slide change match active thumbnail to current slide
-    $('.tb_slick_slider').on('beforeChange', function (event, slick, currentSlide, nextSlide) {
+    $(main_slider).on('beforeChange', function (event, slick, currentSlide, nextSlide) {
       var mySlideNumber = nextSlide;
-      $('.tb_slick_slider_thumbnails .slick-slide').removeClass('slick-active');
-      $('.tb_slick_slider_thumbnails .slick-slide').removeClass('slick-current');
-      $('.tb_slick_slider_thumbnails .slick-slide').eq(mySlideNumber).addClass('slick-active');
-      $('.tb_slick_slider_thumbnails .slick-slide').eq(mySlideNumber).addClass('slick-current');
+      $(thumnbs_slide).removeClass('slick-active');
+      $(thumnbs_slide).removeClass('slick-current');
+      $(thumnbs_slide).eq(mySlideNumber).addClass('slick-active');
+      $(thumnbs_slide).eq(mySlideNumber).addClass('slick-current');
     });
     
   }

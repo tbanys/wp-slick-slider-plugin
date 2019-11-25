@@ -11,38 +11,52 @@ class Shortcodes
 	{
     add_shortcode( 'tb-slick-slider', array( $this, 'create_slider_shortcode' ));
     add_action( 'init', array( $this, 'vc_map_product_list' ));
+    // add_image_size( 'slider-large', 1901, 708 );
+    // add_image_size( 'slider-small', 2000, 508 );
+    add_image_size( 'slider-thumb', 250, 96 );
 	}
 	public function create_slider_shortcode($atts) 
 	{
     $a = shortcode_atts( array(
-      'id' => '',
+      'slider_images' => '',
+      // 'id' => '',
       'thumbnails' => '',
       'image' => '',
       'badge' => '',
       'breadcrumbs' => '',
+      'interval' => '5000',
+      'image_size' => 'full',
     ), $atts );
+    
+    $image_size_array = explode("x", $a['image_size']);
+    if (count($image_size_array) < 2) {
+      $image_size = $image_size_array[0];
+    } else {
+      $image_size = $image_size_array;
+    }
 
     ob_start();
     ?>
-    <?php if(!empty($a['id'])) : ?>
+    <?php if(!empty($a['slider_images'])) : ?>
+      <?php $slider_id = rand(1, 200); ?>
       <div class="tb_slick_slider_wrapper_outer">
         <div class="tb_slick_slider_wrapper">
-          <?php $images_id = $this->get_gallery_attachments($a['id']); ?>
+          <?php $images_id = explode(",", $a['slider_images']); ?>
           <!-- Slider -->
           <?php if (!empty($images_id)) : ?>
-            <div class="tb_slick_slider">
+            <div class="tb_slick_slider_<?php echo $slider_id; ?> tb_slick_slider" data-id="<?php echo $slider_id; ?>" data-interval="<?php echo $a['interval']; ?>">
               <?php foreach($images_id as $image_id) : ?>
-                <?php $image = wp_get_attachment_image_src( $image_id, 'full' ); ?>
-                  <div class="tb_slick_slider_slide" style="background-image:url(<?php echo $image[0]; ?>)"></div>
+                <?php $image = wp_get_attachment_image_src( $image_id, $image_size ); ?>
+                  <img src="<?php echo $image[0]; ?>" width="<?php echo $image[1]; ?>" height="<?php echo $image[2]; ?>" alt="" style="max-height:<?php echo count($image_size_array) < 2 ? '' : $image[2]; ?>px">
               <?php endforeach; ?>
             </div>
           <?php endif; ?>
           <!-- Thumbnails -->
           <?php if (!empty($a['thumbnails'])) : ?>
-            <div class="tb_slick_slider_thumbnails" data-items="<?php echo count($images_id); ?>">
+            <div class="tb_slick_slider_thumbnails_<?php echo $slider_id; ?> tb_slick_slider_thumbnails" data-id="<?php echo $slider_id; ?>" data-items="<?php echo count($images_id); ?>">
               <?php foreach($images_id as $image_id) : ?>
-                <?php $image = wp_get_attachment_image_src( $image_id, 'full' ); ?>
-                  <div class="thumbnail_wrapper" style="background-image:url(<?php echo $image[0]; ?>)"></div>
+                <?php $image = wp_get_attachment_image_src( $image_id, 'slider-thumb' ); ?>
+                  <img src="<?php echo $image[0]; ?>" alt="">
               <?php endforeach; ?>
             </div>
           <?php endif; ?>
@@ -88,20 +102,35 @@ class Shortcodes
           "is_container" => false,
           "params" => [
             [
+              "type" => "attach_images",
+              "class" => "",
+              "heading" => __( "Slider images", "tbSlickSlider" ),
+              "param_name" => "slider_images",
+              "value" => '',
+            ],
+            [
               "type" => "textfield",
               "class" => "",
-              "heading" => __( "Slider id", "tbSlickSlider" ),
-              "param_name" => "id",
-              "value" => "",
-              "description" => __( "Post id of slider", "tbSlickSlider" )
+              "heading" => __( "Slider image size", "tbSlickSlider" ),
+              "param_name" => "image_size",
+              "value" => "slider-large",
+              "description" => __( "full, large, medium, thumbnail or custom size 1920x1080", "tbSlickSlider" )
             ],
             [
               "type" => "checkbox",
               "class" => "",
-              "heading" => __( "Thumbnails", "tbSlickSlider" ),
+              "heading" => __( "Show thumbnails", "tbSlickSlider" ),
               "param_name" => "thumbnails",
               "value" => "Yes",
               "description" => __( "Show thumbnails", "tbSlickSlider" )
+            ],
+            [
+              "type" => "textfield",
+              "class" => "",
+              "heading" => __( "Interval in miliseconds", "tbSlickSlider" ),
+              "param_name" => "interval",
+              "value" => "5000",
+              "description" => __( "Default 5s. 1000 = 1s", "tbSlickSlider" )
             ],
             [
               "type" => "checkbox",
